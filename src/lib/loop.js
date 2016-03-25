@@ -1,4 +1,4 @@
-const EventEmitter = require('eventemitter2');
+const EventEmitter = require('jvent');
 
 function Loop() {
   var id, last,

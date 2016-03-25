@@ -4,20 +4,23 @@
   "description": "game engine",
   "author": "flintinatux",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/flintinatux/manic.git"
+  },
   "main": "index.js",
   "scripts": {
     "build": "browserify index.js --standalone Manic > dist/manic.js",
     "clean": "rm -rf dist",
-    "postbuild": "ccjs dist/manic.js > dist/manic.min.js",
+    "postbuild": "ccjs dist/manic.js --warning_level=QUIET > dist/manic.min.js",
     "prebuild": "npm run clean && mkdir -p dist",
     "test": "echo \"No tests yet\" && exit 0"
   },
   "dependencies": {
-    "eventemitter2": "^1.0.0",
+    "jvent": "^0.2.0",
     "lodash": "^4.6.1"
   },
   "devDependencies": {
-    "acorn": "^3.0.4",
     "browserify": "^13.0.0",
     "closurecompiler": "^1.5.2"
   }

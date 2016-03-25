@@ -1,8 +1,6 @@
 const template = require('lodash/template');
 
-function Entity(opts) {
-  var { state, type } = opts;
-
+function Entity({ state, type }) {
   var proto   = types[type],
       current = Object.assign({}, proto.properties, state),
       next    = Object.assign({}, proto.properties, state),
