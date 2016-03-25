@@ -1,0 +1,19 @@
+{
+  "name": "manic",
+  "version": "0.0.0",
+  "description": "game engine",
+  "author": "flintinatux",
+  "license": "ISC",
+  "main": "index.js",
+  "scripts": {
+    "build": "browserify index.js --standalone Manic > dist/manic.js",
+    "clean": "rm -rf dist",
+    "postbuild": "uglifyjs --screw-ie8 dist/manic.js > dist/manic.min.js",
+    "prebuild": "npm run clean && mkdir -p dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "browserify": "^13.0.0",
+    "uglify-js": "github:mishoo/UglifyJS2#harmony"
+  }
+}
