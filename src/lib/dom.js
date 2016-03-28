@@ -1,14 +1,21 @@
-function Dom(parent) {
-  parent.style.margin = parent.style.padding = 0;
+function Dom(parent, ratio=1) {
+  Object.assign(parent.style, {
+    margin:   0,
+    overflow: 'hidden',
+    padding:  0
+  });
+
+  window.addEventListener('resize', resize);
+  resize();
 
   var root = document.createElement('div');
   root.className = 'root';
-  root.style.position = 'relative';
+  Object.assign(root.style, { position: 'relative' });
   parent.appendChild(root);
 
   var grid = document.createElement('div');
   grid.className = 'grid';
-  grid.style.paddingTop = '100%';
+  Object.assign(grid.style, { paddingTop: '100%' });
   root.appendChild(grid);
 
   var dom = new Map;
@@ -30,12 +37,23 @@ function Dom(parent) {
     get(entity) {
       if (dom.has(entity)) return get(entity);
       var el = document.createElement('div');
-      el.style.position = 'absolute';
+      Object.assign(el.style, { position: 'absolute' });
       root.appendChild(el);
       dom.set(entity, el);
       return el;
+    },
+
+    teardown() {
+      window.removeEventListener('resize', resize);
+      dom.clear();
+      grid.remove();
+      root.remove();
     }
   });
+
+  function resize() {
+    parent.style.height = `${parent.clientWidth * ratio}px`;
+  }
 
   return dom;
 }

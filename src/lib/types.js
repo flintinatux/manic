@@ -1,3 +1,5 @@
+const merge = require('lodash/merge');
+
 const BaseEntity = require('./base-entity');
 
 function Types() {
@@ -16,7 +18,7 @@ function Types() {
         if (!parsed[name]) {
           var type = defs[name];
           var parent = type.parent ? parseType(type.parent) : BaseEntity;
-          parsed[name] = Object.assign({}, parent, type);
+          parsed[name] = merge({}, parent, type);
         }
         return parsed[name];
       }

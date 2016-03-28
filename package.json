@@ -12,7 +12,7 @@
   "scripts": {
     "build": "browserify src/manic.js --standalone Manic > dist/manic.js",
     "clean": "rm -rf dist",
-    "demo": "browser-sync start --files 'dist/, demo.html' --no-open --port 3600 --server",
+    "demo": "browser-sync start --files 'dist/, demo.html' --no-notify --no-open --port 3600 --server",
     "postbuild": "ccjs dist/manic.js --warning_level=QUIET > dist/manic-min.js",
     "prebuild": "npm run clean && mkdir -p dist",
     "prewatch": "npm run clean && mkdir -p dist",
@@ -22,6 +22,7 @@
   "dependencies": {
     "classnames": "^2.2.3",
     "eventemitter3": "^1.2.0",
+    "keycode": "^2.1.1",
     "lodash": "^4.6.1"
   },
   "devDependencies": {

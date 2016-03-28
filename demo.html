@@ -4,67 +4,121 @@
     <title>Manic Demo</title>
     <script type="text/javascript" src="dist/manic.js"></script>
     <style type="text/css">
-      .Block, .FastBlock { background: black; }
-      .grid { border: 1px solid black; }
+      #game { border: 1px solid black; }
+      .Fast, .Slow { background: black; }
+      .PlayerOne { background: blue; }
+      .PlayerTwo { background: red; }
     </style>
   </head>
-  <body style="margin: 0 auto; width: 50%;">
+  <body>
     <div id="game"></div>
     <script type="text/javascript">
-      var manic = Manic(document.getElementById('game'));
+      var manic = Manic(document.getElementById('game'), 0.6);
 
-      manic.component('Oscillating', function(entity, opts) {
-        var { amplitude, rate } = opts;
+      manic.component('Controls', function(entity, { up, down }) {
+        return function update(ctx) {
+          var { keys } = ctx.inputs;
+          if (keys.has(up))   return entity.ay = -entity.amax;
+          if (keys.has(down)) return entity.ay =  entity.amax;
+          entity.ay = 0;
+        }
+      });
+
+      manic.component('Oscillating', function(entity, { amp, rate }) {
         var step = 0;
         return function update(ctx) {
-          entity.vx = amplitude * Math.cos(rate * step++);
+          entity.vx = amp * Math.cos(rate * step++);
         }
       });
 
       manic.types({
-        Block: {
+        Ball: {
           components: {
-            Oscillating: {
-              amplitude: 2,
-              rate: 0.05
-            },
             Movable: {},
-            Render: {}
+            Render:  {}
           }
         },
-        FastBlock: {
+        Fast: {
+          parent: 'Ball',
           components: {
             Oscillating: {
-              amplitude: 1,
+              amp:  1,
               rate: 0.1
-            },
+            }
+          }
+        },
+        Player: {
+          components: {
             Movable: {},
-            Render: {}
+            Render:  {}
+          },
+          amax: 0.075,
+          vmax: 0.8
+        },
+        PlayerOne: {
+          parent: 'Player',
+          components: {
+            Controls: {
+              down: 's',
+              up:   'w'
+            }
+          }
+        },
+        PlayerTwo: {
+          parent: 'Player',
+          components: {
+            Controls: {
+              down: 'down',
+              up:   'up'
+            }
+          }
+        },
+        Slow: {
+          parent: 'Ball',
+          components: {
+            Oscillating: {
+              amp:  2,
+              rate: 0.05
+            }
           }
         }
       });
 
       manic.stage([
         {
-          type: 'Block',
+          type: 'Slow',
           state: {
             h: 2,
             w: 2,
             x: 50,
-            y: 33,
-            vx: 0.0,
-            vy: 0.0
+            y: 20
           }
         },
         {
-          type: 'FastBlock',
+          type: 'Fast',
           state: {
             h: 2,
             w: 2,
             x: 50,
-            y: 66,
-            vx: 0.0,
-            vy: 0.0
+            y: 40
+          }
+        },
+        {
+          type: 'PlayerOne',
+          state: {
+            h: 16,
+            w: 2,
+            x: 4,
+            y: 30
+          }
+        },
+        {
+          type: 'PlayerTwo',
+          state: {
+            h: 16,
+            w: 2,
+            x: 96,
+            y: 30
           }
         }
       ]);

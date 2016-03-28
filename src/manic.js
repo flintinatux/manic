@@ -6,9 +6,9 @@ const { invoke } = require('./util/list')
 const Loop       = require('./lib/loop');
 const Types      = require('./lib/types');
 
-function Manic(parent) {
+function Manic(parent, ratio) {
   var comps    = Components(),
-      dom      = Dom(parent)
+      dom      = Dom(parent, ratio),
       entities = [],
       inputs   = Inputs(),
       loop     = Loop(),
@@ -42,7 +42,13 @@ function Manic(parent) {
 
     start:    loop.start,
     stop:     loop.stop,
-    teardown: loop.teardown,
+
+    teardown() {
+      loop.teardown();
+      dom.teardown();
+      inputs.teardown();
+    },
+
     types:    types.load
   };
 
