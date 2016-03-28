@@ -1,4 +1,6 @@
-const EventEmitter = require('jvent');
+const EventEmitter = require('eventemitter3');
+
+const config = require('../config').loop;
 
 function Loop() {
   var id, last,
@@ -15,6 +17,11 @@ function Loop() {
     stop() {
       cancelAnimationFrame(id);
       loop.emit('stopped', { time: performance.now() });
+    },
+
+    teardown() {
+      loop.stop();
+      loop.removeAllListeners();
     }
   });
 
@@ -26,6 +33,7 @@ function Loop() {
 
     while (lag > config.step) {
       loop.emit('update');
+      loop.emit('swap');
       lag -= config.step;
     }
 

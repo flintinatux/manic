@@ -8,20 +8,27 @@
     "type": "git",
     "url": "git+ssh://git@github.com/flintinatux/manic.git"
   },
-  "main": "index.js",
+  "main": "src/manic.js",
   "scripts": {
-    "build": "browserify index.js --standalone Manic > dist/manic.js",
+    "build": "browserify src/manic.js --standalone Manic > dist/manic.js",
     "clean": "rm -rf dist",
-    "postbuild": "ccjs dist/manic.js --warning_level=QUIET > dist/manic.min.js",
+    "demo": "browser-sync start --files 'dist/, demo.html' --no-open --port 3600 --server",
+    "postbuild": "ccjs dist/manic.js --warning_level=QUIET > dist/manic-min.js",
     "prebuild": "npm run clean && mkdir -p dist",
-    "test": "echo \"No tests yet\" && exit 0"
+    "prewatch": "npm run clean && mkdir -p dist",
+    "test": "echo \"No tests yet\" && exit 0",
+    "watch": "watchify src/manic.js -d -v --standalone Manic -o dist/manic.js"
   },
   "dependencies": {
-    "jvent": "^0.2.0",
+    "classnames": "^2.2.3",
+    "eventemitter3": "^1.2.0",
     "lodash": "^4.6.1"
   },
   "devDependencies": {
+    "browser-sync": "^2.11.2",
     "browserify": "^13.0.0",
-    "closurecompiler": "^1.5.2"
+    "closurecompiler": "^1.5.2",
+    "http-server": "^0.9.0",
+    "watchify": "^3.7.0"
   }
 }

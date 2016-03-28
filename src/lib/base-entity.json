@@ -1,0 +1,22 @@
+{
+  "components": {},
+  "properties": {
+    "h": 0,
+    "w": 0,
+    "x": 0,
+    "y": 0,
+    "vx": 0,
+    "vy": 0,
+    "ax": 0,
+    "ay": 0
+  },
+  "computed": {
+    "l": "x - w/2",
+    "r": "x + w/2",
+    "t": "y - h/2",
+    "b": "y + h/2"
+  },
+  "variations": [],
+  "amax": 0,
+  "vmax": 0
+}

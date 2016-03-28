@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Manic Demo</title>
+    <script type="text/javascript" src="dist/manic.js"></script>
+    <style type="text/css">
+      .Block, .FastBlock { background: black; }
+      .grid { border: 1px solid black; }
+    </style>
+  </head>
+  <body style="margin: 0 auto; width: 50%;">
+    <div id="game"></div>
+    <script type="text/javascript">
+      var manic = Manic(document.getElementById('game'));
+
+      manic.component('Oscillating', function(entity, opts) {
+        var { amplitude, rate } = opts;
+        var step = 0;
+        return function update(ctx) {
+          entity.vx = amplitude * Math.cos(rate * step++);
+        }
+      });
+
+      manic.types({
+        Block: {
+          components: {
+            Oscillating: {
+              amplitude: 2,
+              rate: 0.05
+            },
+            Movable: {},
+            Render: {}
+          }
+        },
+        FastBlock: {
+          components: {
+            Oscillating: {
+              amplitude: 1,
+              rate: 0.1
+            },
+            Movable: {},
+            Render: {}
+          }
+        }
+      });
+
+      manic.stage([
+        {
+          type: 'Block',
+          state: {
+            h: 2,
+            w: 2,
+            x: 50,
+            y: 33,
+            vx: 0.0,
+            vy: 0.0
+          }
+        },
+        {
+          type: 'FastBlock',
+          state: {
+            h: 2,
+            w: 2,
+            x: 50,
+            y: 66,
+            vx: 0.0,
+            vy: 0.0
+          }
+        }
+      ]);
+    </script>
+  </body>
+</html>

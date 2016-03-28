@@ -1,15 +1,27 @@
 const template = require('lodash/template');
 
-function Entity({ state, type }) {
-  var proto   = types[type],
+const { each } = require('../util/list')
+
+function Entity({ state, type }, { comps, types }) {
+  var proto   = types.get(type),
       current = Object.assign({}, proto.properties, state),
       next    = Object.assign({}, proto.properties, state),
-      entity  = Object.create(proto);
+      entity  = Object.create(proto),
+      renders = [],
+      updates = [];
 
   Object.assign(entity, {
     current,
     next,
     type,
+
+    destroy() {
+      // TODO
+    },
+
+    render(ctx) {
+      each(renders, ctx);
+    },
 
     reset() {
       Object.assign(next, state);
@@ -17,6 +29,10 @@ function Entity({ state, type }) {
 
     swap() {
       Object.assign(current, next);
+    },
+
+    update(ctx) {
+      each(updates, ctx);
     }
   });
 
@@ -32,6 +48,12 @@ function Entity({ state, type }) {
     Object.defineProperty(entity,  property, descriptor);
     Object.defineProperty(current, property, descriptor);
     Object.defineProperty(next,    property, descriptor);
+  }
+
+  for (var name in proto.components) {
+    var opts = proto.components[name];
+    var comp = comps.get(name)(entity, opts);
+    /Render/.test(name) ? renders.push(comp) : updates.push(comp);
   }
 
   return entity;
