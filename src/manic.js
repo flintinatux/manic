@@ -2,9 +2,13 @@ const Components = require('./lib/components');
 const Dom        = require('./lib/dom');
 const Entity     = require('./lib/entity');
 const Inputs     = require('./lib/inputs');
-const { invoke } = require('./util/list')
 const Loop       = require('./lib/loop');
 const Types      = require('./lib/types');
+
+const {
+  invoke,
+  removeDead
+} = require('./util/list');
 
 function Manic(parent, ratio) {
   var comps    = Components(),
@@ -19,16 +23,15 @@ function Manic(parent, ratio) {
   var updateCtx = { entities, inputs };
 
   loop.on('render', render);
-  loop.on('swap',   swap);
   loop.on('update', update);
   loop.start();
 
   var manic = {
+    component: comps.set,
+
     entity(def) {
       entities.push(Entity(def, entityCtx));
     },
-
-    component: comps.set,
 
     stage(stage) {
       loop.stop();
@@ -56,12 +59,10 @@ function Manic(parent, ratio) {
     invoke(entities, 'render', renderCtx);
   }
 
-  function swap() {
-    invoke(entities, 'swap');
-  }
-
   function update() {
     invoke(entities, 'update', updateCtx);
+    invoke(entities, 'swap');
+    removeDead(entities).forEach(dom.delete);
   }
 
   return manic;

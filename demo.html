@@ -24,10 +24,15 @@
         }
       });
 
-      manic.component('Oscillating', function(entity, { amp, rate }) {
+      manic.component('LifeSpan', function(entity, opts) {
+        setTimeout(entity.kill, opts.ms);
+        return function(){};
+      });
+
+      manic.component('Oscillating', function(entity, { amp, dir, rate }) {
         var step = 0;
         return function update(ctx) {
-          entity.vx = amp * Math.cos(rate * step++);
+          entity[`v${dir}`] = amp * Math.cos(rate * step++);
         }
       });
 
@@ -41,8 +46,12 @@
         Fast: {
           parent: 'Ball',
           components: {
+            LifeSpan: {
+              ms: 5000
+            },
             Oscillating: {
               amp:  1,
+              dir:  'y',
               rate: 0.1
             }
           }
@@ -78,6 +87,7 @@
           components: {
             Oscillating: {
               amp:  2,
+              dir:  'x',
               rate: 0.05
             }
           }
@@ -91,7 +101,7 @@
             h: 2,
             w: 2,
             x: 50,
-            y: 20
+            y: 30
           }
         },
         {
@@ -100,7 +110,7 @@
             h: 2,
             w: 2,
             x: 50,
-            y: 40
+            y: 30
           }
         },
         {

@@ -33,7 +33,6 @@ function Loop() {
 
     while (lag > config.step) {
       loop.emit('update');
-      loop.emit('swap');
       lag -= config.step;
     }
 

@@ -10,3 +10,9 @@ exports.invoke = function(list, method, ...args) {
     single[method].apply(single, args);
   }
 }
+
+exports.removeDead = function(list) {
+  var i = list.length, removed = [];
+  while (i--) list[i].dead && removed.push.apply(removed, list.splice(i, 1));
+  return removed;
+}

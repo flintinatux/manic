@@ -15,8 +15,8 @@ function Entity({ state, type }, { comps, types }) {
     next,
     type,
 
-    destroy() {
-      // TODO
+    kill() {
+      entity.dead = true;
     },
 
     render(ctx) {
