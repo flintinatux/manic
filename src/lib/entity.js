@@ -22,7 +22,7 @@ function Entity({ state, type }, { comps, types }) {
   Object.assign(entity, {
     current,
     next,
-    type,
+    types: proto.types,
 
     kill() {
       entity('dead', true);

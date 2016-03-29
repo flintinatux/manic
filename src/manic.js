@@ -25,6 +25,9 @@ function Manic(parent, ratio) {
 
   var manic = {
     component: comps.set,
+    start:     loop.start,
+    stop:      loop.stop,
+    types:     types.load,
 
     entity(def) {
       entities.push(Entity(def, entityCtx));
@@ -40,25 +43,12 @@ function Manic(parent, ratio) {
       });
     },
 
-    start:    loop.start,
-    stop:     loop.stop,
-
     teardown() {
       loop.teardown();
       dom.teardown();
       inputs.teardown();
-    },
-
-    types:    types.load
+    }
   };
-
-  // function removeDead() {
-  //   var i = entities.length;
-  //   while (i--) if (entities[i]('dead')) {
-  //     dom.delete(entities[i]);
-  //     entities.splice(i, 1);
-  //   }
-  // }
 
   function render() {
     invoke(entities, 'render', renderCtx);

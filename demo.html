@@ -5,9 +5,10 @@
     <script type="text/javascript" src="dist/manic.js"></script>
     <style type="text/css">
       #game { border: 1px solid black; }
-      .Fast, .Slow { background: black; }
-      .PlayerOne { background: blue; }
-      .PlayerTwo { background: red; }
+      .Ball { background: black; border-radius: 50%; }
+      .Player { border-radius: 4px; }
+      .One { background: blue; }
+      .Two { background: red; }
     </style>
   </head>
   <body>
@@ -24,8 +25,8 @@
         }
       });
 
-      manic.component('LifeSpan', function(entity, opts) {
-        setTimeout(entity.kill, opts.ms);
+      manic.component('LifeSpan', function(entity, { ms }) {
+        setTimeout(entity.kill, ms);
         return function(){};
       });
 
@@ -40,7 +41,7 @@
         Ball: {
           components: {
             Motion: {},
-            Render:  {}
+            Render: {}
           }
         },
         Fast: {
@@ -56,32 +57,23 @@
             }
           }
         },
+        One: {
+          parent: 'Player',
+          components: {
+            Controls: {
+              up:   'w',
+              down: 's'
+            }
+          }
+        },
         Player: {
           components: {
             Motion: {},
-            Render:  {}
+            Render: {}
           },
           defaults: {
             amax: 0.075,
             vmax: 0.8
-          }
-        },
-        PlayerOne: {
-          parent: 'Player',
-          components: {
-            Controls: {
-              down: 's',
-              up:   'w'
-            }
-          }
-        },
-        PlayerTwo: {
-          parent: 'Player',
-          components: {
-            Controls: {
-              down: 'down',
-              up:   'up'
-            }
           }
         },
         Slow: {
@@ -91,6 +83,15 @@
               amp:  2,
               dir:  'x',
               rate: 0.05
+            }
+          }
+        },
+        Two: {
+          parent: 'Player',
+          components: {
+            Controls: {
+              up:   'up',
+              down: 'down'
             }
           }
         }
@@ -116,7 +117,7 @@
           }
         },
         {
-          type: 'PlayerOne',
+          type: 'One',
           state: {
             h: 16,
             w: 2,
@@ -125,7 +126,7 @@
           }
         },
         {
-          type: 'PlayerTwo',
+          type: 'Two',
           state: {
             h: 16,
             w: 2,

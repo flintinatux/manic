@@ -19,6 +19,7 @@ function Types() {
           var type = defs[name];
           var parent = type.parent ? parseType(type.parent) : BaseEntity;
           parsed[name] = merge({}, parent, type);
+          parsed[name].types.push(name);
         }
         return parsed[name];
       }
