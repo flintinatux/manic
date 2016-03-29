@@ -1,7 +1,7 @@
 const bindAll = require('lodash/bindAll');
 
 const builtIns = [
-  require('../components/movable'),
+  require('../components/motion'),
   require('../components/render')
 ];
 

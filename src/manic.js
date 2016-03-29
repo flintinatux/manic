@@ -5,10 +5,7 @@ const Inputs     = require('./lib/inputs');
 const Loop       = require('./lib/loop');
 const Types      = require('./lib/types');
 
-const {
-  invoke,
-  removeDead
-} = require('./util/list');
+const { invoke, removeDead } = require('./util/list');
 
 function Manic(parent, ratio) {
   var comps    = Components(),

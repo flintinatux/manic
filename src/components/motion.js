@@ -1,7 +1,7 @@
 const move = require('../util/move');
 
-function Movable(entity, opts) {
+function Motion(entity, opts) {
   return move.bind(null, entity);
 }
 
-module.exports = Movable;
+module.exports = Motion;
