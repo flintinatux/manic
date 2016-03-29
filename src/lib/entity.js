@@ -1,14 +1,23 @@
+const get = require('lodash/get');
+const set = require('lodash/set');
 const template = require('lodash/template');
 
 const { each } = require('../util/list')
 
 function Entity({ state, type }, { comps, types }) {
-  var proto   = types.get(type),
-      current = Object.assign({}, proto.properties, state),
-      next    = Object.assign({}, proto.properties, state),
-      entity  = Object.create(proto),
-      renders = [],
-      updates = [];
+  var proto    = types.get(type),
+      current  = Object.assign({}, proto.defaults, state),
+      next     = Object.assign({}, proto.defaults, state),
+      computed = {},
+      renders  = [],
+      updates  = [];
+
+  function entity(key, val) {
+    if (key in computed)   return computed[key](current);
+    if (val === undefined) return get(current, key);
+    set(next, key, val);
+    return val;
+  }
 
   Object.assign(entity, {
     current,
@@ -16,7 +25,7 @@ function Entity({ state, type }, { comps, types }) {
     type,
 
     kill() {
-      entity.dead = true;
+      entity('dead', true);
     },
 
     render(ctx) {
@@ -24,7 +33,7 @@ function Entity({ state, type }, { comps, types }) {
     },
 
     reset() {
-      Object.assign(next, state);
+      Object.assign(next, proto.defaults, state);
     },
 
     swap() {
@@ -36,18 +45,8 @@ function Entity({ state, type }, { comps, types }) {
     }
   });
 
-  for (let property in proto.properties) {
-    Object.defineProperty(entity, property, { get, set });
-    function get()    { return current[property];    }
-    function set(val) { return next[property] = val; }
-  }
-
-  for (let property in proto.computed) {
-    let expression = template('${' + proto.computed[property] + '}');
-    let descriptor = { get() { return expression(this) } };
-    Object.defineProperty(entity,  property, descriptor);
-    Object.defineProperty(current, property, descriptor);
-    Object.defineProperty(next,    property, descriptor);
+  for (var key in proto.computed) {
+    computed[key] = template('${' + proto.computed[key] + '}');
   }
 
   for (var name in proto.components) {

@@ -1,5 +1,6 @@
 function move(entity) {
-  var { current, next, amax, vmax } = entity;
+  var { current, next } = entity;
+  var { amax, vmax } = current;
   var friction = 0;
 
   if (amax && vmax) friction = -(amax / vmax);

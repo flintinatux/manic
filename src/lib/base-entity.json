@@ -1,6 +1,6 @@
 {
   "components": {},
-  "properties": {
+  "defaults": {
     "h": 0,
     "w": 0,
     "x": 0,
@@ -9,6 +9,8 @@
     "vy": 0,
     "ax": 0,
     "ay": 0,
+    "amax": 0,
+    "vmax": 0,
     "dead": false
   },
   "computed": {
@@ -17,7 +19,5 @@
     "t": "y - h/2",
     "b": "y + h/2"
   },
-  "variations": [],
-  "amax": 0,
-  "vmax": 0
+  "variations": []
 }

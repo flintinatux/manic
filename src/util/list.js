@@ -12,7 +12,7 @@ exports.invoke = function(list, method, ...args) {
 }
 
 exports.removeDead = function(list) {
-  var i = list.length, removed = [];
-  while (i--) list[i].dead && removed.push.apply(removed, list.splice(i, 1));
-  return removed;
+  var i = list.length, dead = [];
+  while (i--) list[i]('dead') && dead.push.apply(dead, list.splice(i, 1));
+  return dead;
 }

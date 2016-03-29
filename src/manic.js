@@ -55,6 +55,14 @@ function Manic(parent, ratio) {
     types:    types.load
   };
 
+  // function removeDead() {
+  //   var i = entities.length;
+  //   while (i--) if (entities[i]('dead')) {
+  //     dom.delete(entities[i]);
+  //     entities.splice(i, 1);
+  //   }
+  // }
+
   function render() {
     invoke(entities, 'render', renderCtx);
   }

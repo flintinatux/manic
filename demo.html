@@ -18,9 +18,9 @@
       manic.component('Controls', function(entity, { up, down }) {
         return function update(ctx) {
           var { keys } = ctx.inputs;
-          if (keys.has(up))   return entity.ay = -entity.amax;
-          if (keys.has(down)) return entity.ay =  entity.amax;
-          entity.ay = 0;
+          if (keys.has(up))   return entity('ay', -entity('amax'));
+          if (keys.has(down)) return entity('ay',  entity('amax'));
+          entity('ay', 0);
         }
       });
 
@@ -32,7 +32,7 @@
       manic.component('Oscillating', function(entity, { amp, dir, rate }) {
         var step = 0;
         return function update(ctx) {
-          entity[`v${dir}`] = amp * Math.cos(rate * step++);
+          entity(`v${dir}`, amp * Math.cos(rate * step++));
         }
       });
 
@@ -61,8 +61,10 @@
             Movable: {},
             Render:  {}
           },
-          amax: 0.075,
-          vmax: 0.8
+          defaults: {
+            amax: 0.075,
+            vmax: 0.8
+          }
         },
         PlayerOne: {
           parent: 'Player',
