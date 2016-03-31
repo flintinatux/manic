@@ -39,7 +39,6 @@
 
       manic.component('LifeSpan', function(entity, { ms }) {
         setTimeout(entity.kill, ms);
-        return function(){};
       });
 
       manic.component('Oscillating', function(entity, { amp, dir, rate }) {

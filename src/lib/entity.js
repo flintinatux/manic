@@ -1,5 +1,6 @@
-const get = require('lodash/get');
-const set = require('lodash/set');
+const get  = require('lodash/get');
+const noop = require('lodash/noop');
+const set  = require('lodash/set');
 const template = require('lodash/template');
 
 const { each } = require('../util/list')
@@ -55,7 +56,7 @@ function Entity({ state, type }, { comps, types }) {
 
   for (var name in proto.components) {
     var opts = proto.components[name];
-    var comp = comps.get(name)(entity, opts);
+    var comp = comps.get(name)(entity, opts) || noop;
     /Render/.test(name) ? renders.push(comp) : updates.push(comp);
   }
 
