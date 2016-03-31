@@ -24,6 +24,10 @@ function Entity({ state, type }, { comps, types }) {
     next,
     types: proto.types,
 
+    isA(type) {
+      return proto.types.indexOf(type) !== -1;
+    },
+
     kill() {
       entity('dead', true);
     },

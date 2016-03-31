@@ -5,16 +5,19 @@ const config = require('../config').loop;
 function Loop() {
   var id, last,
       lag  = 0.0;
-      loop = Object.create(new EventEmitter);
+      loop = Object.create(new EventEmitter),
+      running = false;
 
   Object.assign(loop, {
     start() {
+      running = true;
       last = performance.now();
       id = requestAnimationFrame(tick);
       loop.emit('started', { time: last });
     },
 
     stop() {
+      running = false;
       cancelAnimationFrame(id);
       loop.emit('stopped', { time: performance.now() });
     },
@@ -37,7 +40,7 @@ function Loop() {
     }
 
     loop.emit('render');
-    id = requestAnimationFrame(tick);
+    id = running && requestAnimationFrame(tick);
   }
 
   return loop;

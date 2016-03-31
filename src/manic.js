@@ -1,3 +1,4 @@
+const collide    = require('./lib/collide');
 const Components = require('./lib/components');
 const Dom        = require('./lib/dom');
 const Entity     = require('./lib/entity');
@@ -62,5 +63,7 @@ function Manic(parent, ratio) {
 
   return manic;
 }
+
+Object.assign(Manic, { collide });
 
 module.exports = Manic;
