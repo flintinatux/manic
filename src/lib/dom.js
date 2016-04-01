@@ -1,9 +1,5 @@
 function Dom(parent, ratio=1) {
-  Object.assign(parent.style, {
-    margin:   0,
-    overflow: 'hidden',
-    padding:  0
-  });
+  Object.assign(parent.style, { overflow: 'hidden' });
 
   window.addEventListener('resize', resize);
   resize();

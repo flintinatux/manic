@@ -4,6 +4,7 @@ const Dom        = require('./lib/dom');
 const Entity     = require('./lib/entity');
 const Inputs     = require('./lib/inputs');
 const Loop       = require('./lib/loop');
+const move       = require('./util/move');
 const Types      = require('./lib/types');
 
 const { invoke, removeDead } = require('./util/list');
@@ -64,6 +65,6 @@ function Manic(parent, ratio) {
   return manic;
 }
 
-Object.assign(Manic, { collide });
+Object.assign(Manic, { collide, move });
 
 module.exports = Manic;

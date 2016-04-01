@@ -4,7 +4,7 @@ function collide(A, entities, collided) {
   var i = entities.length;
   while (i--) {
     var B = entities[i];
-    if (A === B) return; // || !B.collider
+    if (A === B) continue; // || !B.collider
 
     var Li = inRange(A('cl'), B('cl'), B('cr'));
     var Ri = inRange(B('cl'), A('cl'), A('cr'));
@@ -31,8 +31,6 @@ function collide(A, entities, collided) {
       }
     })();
 
-    // if (side && typeof handlers[B.type] === 'function')
-    //   handlers[B.type](side, B);
     if (side) collided(B, side);
   }
 }
