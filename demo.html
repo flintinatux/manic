@@ -39,9 +39,19 @@
         "Ball": {
           "BasicMotion": {},
           "BasicRender": {
-            "className": "ball",
+            "classNames": ["ball"],
             "h": 2,
             "w": 2
+          },
+          "Oscillation": {},
+          "Position": {}
+        },
+        "Paddle": {
+          "BasicMotion": {},
+          "BasicRender": {
+            "classNames": ["paddle"],
+            "h": 12,
+            "w": 1.5
           },
           "Oscillation": {},
           "Position": {}
@@ -54,6 +64,39 @@
           "state": {
             "Position": {
               "x": 50,
+              "y": 30
+            }
+          }
+        },
+        {
+          "type": "Paddle",
+          "state": {
+            "BasicRender": {
+              "classNames": ["paddle", "one"],
+            },
+            "Oscillation": {
+              "amp": 1.5,
+              "dir": "y",
+              "rate": -0.1
+            },
+            "Position": {
+              "x": 3,
+              "y": 30
+            }
+          }
+        },
+        {
+          "type": "Paddle",
+          "state": {
+            "BasicRender": {
+              "classNames": ["paddle", "two"],
+            },
+            "Oscillation": {
+              "amp": -1.5,
+              "dir": "y",
+            },
+            "Position": {
+              "x": 97,
               "y": 30
             }
           }

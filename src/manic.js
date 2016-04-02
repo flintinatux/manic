@@ -22,7 +22,6 @@ function Manic(parent, ratio) {
   var manic = {
     components: comps.define,
     entity:     entities.create,
-    phases:     systems.order,
     start:      loop.start,
     stop:       loop.stop,
     system:     systems.define,
@@ -31,6 +30,7 @@ function Manic(parent, ratio) {
     stage(stage) {
       loop.stop();
       requestAnimationFrame(function() {
+        dom.clear();
         comps.clear();
         entities.clear();
         loop.start();
@@ -40,6 +40,9 @@ function Manic(parent, ratio) {
 
     teardown() {
       loop.teardown();
+      comps.clear();
+      entities.clear();
+      dom.teardown();
     }
   };
 
