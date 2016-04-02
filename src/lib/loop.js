@@ -4,7 +4,7 @@ const config = require('../config').loop;
 
 function Loop() {
   var id, last,
-      lag  = 0.0;
+      lag = 0.0,
       loop = Object.create(new EventEmitter),
       running = false;
 
@@ -13,13 +13,17 @@ function Loop() {
       running = true;
       last = performance.now();
       id = requestAnimationFrame(tick);
-      loop.emit('started', { time: last });
+      loop.emit('started', {
+        time: last
+      });
     },
 
     stop() {
       running = false;
       cancelAnimationFrame(id);
-      loop.emit('stopped', { time: performance.now() });
+      loop.emit('stopped', {
+        time: performance.now()
+      });
     },
 
     teardown() {
