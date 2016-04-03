@@ -6,9 +6,7 @@
     <style type="text/css">
       #game { border: 1px solid black; }
       .ball { background: black; border-radius: 50%; }
-      .paddle { border-radius: 4px; }
-      .one { background: blue; }
-      .two { background: red; }
+      .paddle { background: black; border-radius: 4px; }
     </style>
   </head>
   <body>
@@ -41,7 +39,7 @@
           "Oscillation": {},
           "Position": {},
           "Render": {
-            "classNames": ["ball"],
+            "className": "ball",
             "h": 2,
             "w": 2
           }
@@ -51,7 +49,7 @@
           "Oscillation": {},
           "Position": {},
           "Render": {
-            "classNames": ["paddle"],
+            "className": "paddle",
             "h": 12,
             "w": 1.5
           }
@@ -79,9 +77,6 @@
             "Position": {
               "x": 3,
               "y": 30
-            },
-            "Render": {
-              "classNames": ["paddle", "one"],
             }
           }
         },
@@ -95,9 +90,6 @@
             "Position": {
               "x": 97,
               "y": 30
-            },
-            "Render": {
-              "classNames": ["paddle", "two"],
             }
           }
         }
