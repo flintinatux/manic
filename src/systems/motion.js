@@ -1,7 +1,7 @@
 module.exports = {
-  name:  'BasicMotion',
+  name:  'Motion',
   phase: 'motion',
-  deps:  ['Position', 'BasicMotion'],
+  deps:  ['Position', 'Motion'],
 
   update(id, [p, m], ctx) {
     var friction = 0;

@@ -1,7 +1,7 @@
 module.exports = {
-  name:  'BasicRender',
+  name:  'Render',
   phase: 'render',
-  deps:  ['Position', 'BasicRender'],
+  deps:  ['Position', 'Render'],
 
   update(id, [p, r], { dom }) {
     var el = dom.get(id),

@@ -1,4 +1,4 @@
 module.exports = [
-  require('./basic-motion'),
-  require('./basic-render')
+  require('./motion'),
+  require('./render')
 ];

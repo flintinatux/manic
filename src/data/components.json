@@ -1,5 +1,5 @@
 {
-  "BasicMotion": {
+  "Motion": {
     "vx": 0,
     "vy": 0,
     "ax": 0,
@@ -7,7 +7,7 @@
     "vmax": 0,
     "amax": 0
   },
-  "BasicRender": {
+  "Render": {
     "className": "",
     "h": 0,
     "w": 0

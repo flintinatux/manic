@@ -28,7 +28,7 @@
       manic.system({
         name: 'Oscillation',
         phase: 'physics',
-        deps: ['Oscillation', 'BasicMotion'],
+        deps: ['Oscillation', 'Motion'],
 
         update(id, [o, m], ctx) {
           m[`v${o.dir}`] = o.amp * Math.cos(o.rate * o.step++);
@@ -37,24 +37,24 @@
 
       manic.templates({
         "Ball": {
-          "BasicMotion": {},
-          "BasicRender": {
+          "Motion": {},
+          "Oscillation": {},
+          "Position": {},
+          "Render": {
             "classNames": ["ball"],
             "h": 2,
             "w": 2
-          },
-          "Oscillation": {},
-          "Position": {}
+          }
         },
         "Paddle": {
-          "BasicMotion": {},
-          "BasicRender": {
+          "Motion": {},
+          "Oscillation": {},
+          "Position": {},
+          "Render": {
             "classNames": ["paddle"],
             "h": 12,
             "w": 1.5
-          },
-          "Oscillation": {},
-          "Position": {}
+          }
         }
       });
 
@@ -71,9 +71,6 @@
         {
           "type": "Paddle",
           "state": {
-            "BasicRender": {
-              "classNames": ["paddle", "one"],
-            },
             "Oscillation": {
               "amp": 1.5,
               "dir": "y",
@@ -82,15 +79,15 @@
             "Position": {
               "x": 3,
               "y": 30
+            },
+            "Render": {
+              "classNames": ["paddle", "one"],
             }
           }
         },
         {
           "type": "Paddle",
           "state": {
-            "BasicRender": {
-              "classNames": ["paddle", "two"],
-            },
             "Oscillation": {
               "amp": -1.5,
               "dir": "y",
@@ -98,6 +95,9 @@
             "Position": {
               "x": 97,
               "y": 30
+            },
+            "Render": {
+              "classNames": ["paddle", "two"],
             }
           }
         }
