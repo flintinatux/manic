@@ -1,4 +1,9 @@
 {
+  "Collision": {
+    "h": 0,
+    "w": 0
+  },
+  "Contacts": {},
   "Motion": {
     "vx": 0,
     "vy": 0,
@@ -7,17 +12,13 @@
     "vmax": 0,
     "amax": 0
   },
+  "Position": {
+    "x": 0,
+    "y": 0
+  },
   "Render": {
     "className": "",
     "h": 0,
     "w": 0
-  },
-  "Collision": {
-    "h": 0,
-    "w": 0
-  },
-  "Position": {
-    "x": 0,
-    "y": 0
   }
 }

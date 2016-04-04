@@ -1,14 +1,17 @@
+const idgen = require('idgen');
+
 function Entities(comps) {
   var defs = {},
-      next = 0;
+      list = [];
 
-  var entities = {
+  Object.assign(list, {
     clear() {
-      next = 0;
+      list.length = 0;
     },
 
     create({ type, state }) {
-      var id = next++;
+      var id = idgen(6);
+      list.push(id);
       var def = defs[type];
       for (var name in def) {
         comps.add(name, id, Object.assign({}, def[name], state[name]));
@@ -19,12 +22,12 @@ function Entities(comps) {
       defs = newDefs;
     },
 
-    length() {
-      return next;
+    remove(id) {
+      list.splice(list.indexOf(id), 1);
     }
-  };
+  });
 
-  return entities;
+  return list;
 }
 
 module.exports = Entities;

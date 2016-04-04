@@ -1,17 +1,14 @@
-const every = require('lodash/every');
-const union = require('lodash/union');
-
-const builtIns = require('../systems');
-const order = require('../config').phases;
+const builtIns  = require('../systems');
+const { every } = require('../util/list');
+const order     = require('../config').phases;
 
 function Systems(entities, comps) {
-  var phases = {};
+  var phases = { render: [] };
+  for (var phase of order) phases[phase] = [];
 
   var systems = {
     define(system) {
-      var { phase } = system;
-      (phase in phases) || (phases[phase] = []);
-      phases[phase].push(system);
+      phases[system.phase].push(system);
     },
 
     render(ctx) {
@@ -19,21 +16,25 @@ function Systems(entities, comps) {
     },
 
     update(ctx) {
-      for (var phase of order) runAll(phase, ctx);
+      for (var i = 0; i < order.length; i++) runAll(order[i], ctx);
     }
   };
 
   builtIns.forEach(systems.define);
 
-  function run({ deps, update }, ctx) {
-    deps = comps.fetch(deps);
-    var id = entities.length();
-    while (id--) if (every(deps[id])) update(id, deps[id], ctx);
+  function run({ deps, update, updateAll }, ctx) {
+    if (typeof updateAll === 'function') return updateAll(ctx);
+    var id, i = entities.length;
+    function getState(dep) { return comps(dep, id) }
+    while (i--) {
+      id = entities[i];
+      state = deps.map(getState);
+      every(state) && update(id, state, ctx);
+    }
   }
 
   function runAll(phase, ctx) {
     phase = phases[phase];
-    if (!phase) return;
     var i = phase.length;
     while (i--) run(phase[i], ctx);
   }

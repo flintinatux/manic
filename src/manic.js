@@ -1,6 +1,7 @@
 const Components = require('./lib/components');
 const Dom        = require('./lib/dom');
 const Entities   = require('./lib/entities');
+const Inputs     = require('./lib/inputs');
 const Loop       = require('./lib/loop');
 const Systems    = require('./lib/systems');
 
@@ -8,12 +9,13 @@ function Manic(parent, ratio) {
   var comps     = Components(),
       dom       = Dom(parent, ratio),
       entities  = Entities(comps),
+      inputs    = Inputs(),
       loop      = Loop(),
       systems   = Systems(entities, comps),
       templates = {};
 
   var renderCtx = { dom };
-  var updateCtx = { comps, entities };
+  var updateCtx = { comps, entities, inputs };
 
   loop.on('render', render);
   loop.on('update', update);
@@ -43,6 +45,7 @@ function Manic(parent, ratio) {
       comps.clear();
       entities.clear();
       dom.teardown();
+      inputs.teardown();
     }
   };
 

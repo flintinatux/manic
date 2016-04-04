@@ -6,7 +6,9 @@
   "phases": [
     "inputs",
     "ai",
+    "collision",
     "physics",
+    "death",
     "motion"
   ]
 }
