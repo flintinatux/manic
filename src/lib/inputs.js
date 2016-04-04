@@ -2,7 +2,7 @@ const keycode = require('keycode');
 
 function Inputs() {
   var keys = new Set,
-      has  = keys.has.bind(keys);
+    has = keys.has.bind(keys);
 
   Object.assign(keys, {
     has(key) {
@@ -11,7 +11,7 @@ function Inputs() {
   });
 
   window.addEventListener('keydown', keydown);
-  window.addEventListener('keyup',   keyup);
+  window.addEventListener('keyup', keyup);
 
   function keydown(event) {
     keys.add(keycode(event));
@@ -26,7 +26,7 @@ function Inputs() {
 
     teardown() {
       window.removeEventListener('keydown', keydown);
-      window.removeEventListener('keyup',   keyup);
+      window.removeEventListener('keyup', keyup);
     }
   };
 }

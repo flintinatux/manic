@@ -5,10 +5,8 @@
     <script type="text/javascript" src="dist/manic.js"></script>
     <style type="text/css">
       #game { border: 1px solid black; }
-      .Ball { background: black; border-radius: 50%; }
-      .Player { border-radius: 4px; }
-      .One { background: blue; }
-      .Two { background: red; }
+      .ball { background: black; border-radius: 50%; }
+      .paddle { background: black; border-radius: 4px; }
     </style>
   </head>
   <body>
@@ -16,132 +14,83 @@
     <script type="text/javascript">
       var manic = Manic(document.getElementById('game'), 0.6);
 
-      manic.component('Bounce', function(entity) {
-        function collided(other, side) {
-          if (other.isA('Player')) {
-            entity('vx', -entity('vx'));
-          };
-        }
-
-        return function update({ entities }) {
-          Manic.collide(entity, entities, collided);
+      manic.components({
+        "Oscillation": {
+          "amp": 1,
+          "dir": "x",
+          "rate": 0.1,
+          "step": 0
         }
       });
 
-      manic.component('Controls', function(entity, { up, down }) {
-        return function update(ctx) {
-          var { keys } = ctx.inputs;
-          if (keys.has(up))   return entity('ay', -entity('amax'));
-          if (keys.has(down)) return entity('ay',  entity('amax'));
-          entity('ay', 0);
+      manic.system({
+        name: 'Oscillation',
+        phase: 'physics',
+        deps: ['Oscillation', 'Motion'],
+
+        update(id, [o, m], ctx) {
+          m[`v${o.dir}`] = o.amp * Math.cos(o.rate * o.step++);
         }
-      });
+      })
 
-      manic.component('LifeSpan', function(entity, { ms }) {
-        setTimeout(entity.kill, ms);
-      });
-
-      manic.component('Oscillating', function(entity, { amp, dir, rate }) {
-        var step = 0;
-        return function update(ctx) {
-          entity(`v${dir}`, amp * Math.cos(rate * step++));
-        }
-      });
-
-      manic.types({
-        Ball: {
-          components: {
-            Motion: {},
-            Render: {}
+      manic.templates({
+        "Ball": {
+          "Motion": {},
+          "Oscillation": {},
+          "Position": {},
+          "Render": {
+            "className": "ball",
+            "h": 2,
+            "w": 2
           }
         },
-        Fast: {
-          parent: 'Ball',
-          components: {
-            LifeSpan: {
-              ms: 5000
-            },
-            Oscillating: {
-              amp:  1,
-              dir:  'y',
-              rate: 0.1
-            }
-          }
-        },
-        One: {
-          parent: 'Player',
-          components: {
-            Controls: {
-              up:   'w',
-              down: 's'
-            }
-          }
-        },
-        Player: {
-          components: {
-            Motion: {},
-            Render: {}
-          },
-          defaults: {
-            amax: 0.075,
-            vmax: 0.8
-          }
-        },
-        Slow: {
-          parent: 'Ball',
-          components: {
-            Bounce: {}
-          },
-          defaults: {
-            vx: 0.5
-          }
-        },
-        Two: {
-          parent: 'Player',
-          components: {
-            Controls: {
-              up:   'up',
-              down: 'down'
-            }
+        "Paddle": {
+          "Motion": {},
+          "Oscillation": {},
+          "Position": {},
+          "Render": {
+            "className": "paddle",
+            "h": 12,
+            "w": 1.5
           }
         }
       });
 
       manic.stage([
         {
-          type: 'Slow',
-          state: {
-            h: 2,
-            w: 2,
-            x: 50,
-            y: 30
+          "type": "Ball",
+          "state": {
+            "Position": {
+              "x": 50,
+              "y": 30
+            }
           }
         },
         {
-          type: 'Fast',
-          state: {
-            h: 2,
-            w: 2,
-            x: 50,
-            y: 30
+          "type": "Paddle",
+          "state": {
+            "Oscillation": {
+              "amp": 1.5,
+              "dir": "y",
+              "rate": -0.1
+            },
+            "Position": {
+              "x": 3,
+              "y": 30
+            }
           }
         },
         {
-          type: 'One',
-          state: {
-            h: 16,
-            w: 2,
-            x: 4,
-            y: 30
-          }
-        },
-        {
-          type: 'Two',
-          state: {
-            h: 16,
-            w: 2,
-            x: 96,
-            y: 30
+          "type": "Paddle",
+          "state": {
+            "Oscillation": {
+              "amp": -1.5,
+              "dir": "y",
+            },
+            "Position": {
+              "x": 97,
+              "y": 30
+            }
           }
         }
       ]);

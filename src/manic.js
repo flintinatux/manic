@@ -1,70 +1,63 @@
-const collide    = require('./lib/collide');
 const Components = require('./lib/components');
 const Dom        = require('./lib/dom');
-const Entity     = require('./lib/entity');
+const Entities   = require('./lib/entities');
 const Inputs     = require('./lib/inputs');
 const Loop       = require('./lib/loop');
-const move       = require('./util/move');
-const Types      = require('./lib/types');
-
-const { invoke, removeDead } = require('./util/list');
+const Systems    = require('./lib/systems');
 
 function Manic(parent, ratio) {
-  var comps    = Components(),
-      dom      = Dom(parent, ratio),
-      entities = [],
-      inputs   = Inputs(),
-      loop     = Loop(),
-      types    = Types();
+  var comps     = Components(),
+      dom       = Dom(parent, ratio),
+      entities  = Entities(comps),
+      inputs    = Inputs(),
+      loop      = Loop(),
+      systems   = Systems(entities, comps),
+      templates = {};
 
-  var entityCtx = { comps, types };
   var renderCtx = { dom };
-  var updateCtx = { entities, inputs };
+  var updateCtx = { comps, entities, inputs };
 
   loop.on('render', render);
   loop.on('update', update);
   loop.start();
 
   var manic = {
-    component: comps.set,
-    start:     loop.start,
-    stop:      loop.stop,
-    types:     types.load,
-
-    entity(def) {
-      entities.push(Entity(def, entityCtx));
-    },
+    components: comps.define,
+    entity:     entities.create,
+    start:      loop.start,
+    stop:       loop.stop,
+    system:     systems.define,
+    templates:  entities.define,
 
     stage(stage) {
       loop.stop();
       requestAnimationFrame(function() {
         dom.clear();
-        entities.length = 0;
+        comps.clear();
+        entities.clear();
         loop.start();
-        stage.forEach(manic.entity);
+        stage.forEach(entities.create);
       });
     },
 
     teardown() {
       loop.teardown();
+      comps.clear();
+      entities.clear();
       dom.teardown();
       inputs.teardown();
     }
   };
 
   function render() {
-    invoke(entities, 'render', renderCtx);
+    systems.render(renderCtx);
   }
 
   function update() {
-    invoke(entities, 'update', updateCtx);
-    invoke(entities, 'swap');
-    removeDead(entities).forEach(dom.delete);
+    systems.update(updateCtx);
   }
 
   return manic;
 }
-
-Object.assign(Manic, { collide, move });
 
 module.exports = Manic;

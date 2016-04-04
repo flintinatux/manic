@@ -3,6 +3,12 @@ exports.each = function(list, ...args) {
   while (i--) list[i].apply(null, args);
 }
 
+exports.every = function(list) {
+  var i = list.length;
+  while (i--) if (!list[i]) return false;
+  return true;
+}
+
 exports.invoke = function(list, method, ...args) {
   var i = list.length;
   while (i--) {

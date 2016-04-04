@@ -22,6 +22,7 @@
   "dependencies": {
     "classnames": "^2.2.3",
     "eventemitter3": "^1.2.0",
+    "idgen": "^2.0.2",
     "keycode": "^2.1.1",
     "lodash": "^4.6.1"
   },

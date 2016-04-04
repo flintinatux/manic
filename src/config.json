@@ -2,5 +2,13 @@
   "loop": {
     "maxLag": 5000,
     "step": 16.67
-  }
+  },
+  "phases": [
+    "inputs",
+    "ai",
+    "collision",
+    "physics",
+    "death",
+    "motion"
+  ]
 }
