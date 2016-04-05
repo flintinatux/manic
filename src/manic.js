@@ -11,15 +11,13 @@ function Manic(parent, ratio) {
       entities  = Entities(comps),
       inputs    = Inputs(),
       loop      = Loop(),
-      systems   = Systems(entities, comps),
-      templates = {};
+      systems   = Systems(entities, comps);
 
   var renderCtx = { dom };
-  var updateCtx = { comps, entities, inputs };
+  var updateCtx = { comps, entities, inputs, loop };
 
   loop.on('render', render);
   loop.on('update', update);
-  loop.start();
 
   var manic = {
     components: comps.define,
@@ -29,14 +27,13 @@ function Manic(parent, ratio) {
     system:     systems.define,
     templates:  entities.define,
 
-    stage(stage) {
-      loop.stop();
+    scene(scene) {
       requestAnimationFrame(function() {
         dom.clear();
         comps.clear();
         entities.clear();
-        loop.start();
-        stage.forEach(entities.create);
+        scene.forEach(entities.create);
+        loop.tick(performance.now());
       });
     },
 
