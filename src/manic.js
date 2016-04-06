@@ -13,9 +13,6 @@ function Manic(parent, ratio) {
       loop      = Loop(),
       systems   = Systems(entities, comps);
 
-  var renderCtx = { dom };
-  var updateCtx = { comps, entities, inputs, loop };
-
   loop.on('render', render);
   loop.on('update', update);
 
@@ -45,6 +42,9 @@ function Manic(parent, ratio) {
       inputs.teardown();
     }
   };
+
+  var renderCtx = { dom };
+  var updateCtx = { comps, entities, inputs, loop, manic };
 
   function render() {
     systems.render(renderCtx);

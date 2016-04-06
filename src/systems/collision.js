@@ -33,7 +33,7 @@ module.exports = {
           cb = comps('Contacts', B) || comps.add('Contacts', B);
           ca[B] = side;
           cb[A] = opposite[side];
-          return;
+          continue;
         }
 
         if (ca = comps('Contacts', A)) {

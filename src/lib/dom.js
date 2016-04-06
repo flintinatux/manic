@@ -21,7 +21,7 @@ function Dom(parent, ratio=1) {
 
   Object.assign(dom, {
     clear() {
-      for (var el of dom) el.remove();
+      for (var [entity, el] of dom) el.remove();
       clear();
     },
 

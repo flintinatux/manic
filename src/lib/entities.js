@@ -10,10 +10,11 @@ function Entities(comps) {
     },
 
     create({ type, state }) {
-      var id = idgen(6);
+      var id = idgen(6),
+          def = defs[type],
+          names = Object.keys(def).concat(Object.keys(state));
       list.push(id);
-      var def = defs[type];
-      for (var name in def) {
+      for (var name of names) {
         comps.add(name, id, Object.assign({}, def[name], state[name]));
       }
     },
