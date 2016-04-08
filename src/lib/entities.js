@@ -1,6 +1,6 @@
 const idgen = require('idgen');
 
-function Entities(comps) {
+function Entities(comps, dom) {
   var defs = {},
       list = [];
 
@@ -9,7 +9,7 @@ function Entities(comps) {
       list.length = 0;
     },
 
-    create({ type, state }) {
+    create({ type, state={} }) {
       var id = idgen(6),
           def = defs[type],
           names = Object.keys(def).concat(Object.keys(state));
@@ -25,6 +25,8 @@ function Entities(comps) {
 
     remove(id) {
       list.splice(list.indexOf(id), 1);
+      comps.removeAll(id);
+      dom.delete(id);
     }
   });
 

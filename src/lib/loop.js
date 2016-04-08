@@ -29,6 +29,7 @@ function Loop() {
     },
 
     tick(next) {
+      next || (next = performance.now());
       lag += next - last;
       last = next;
 

@@ -8,7 +8,7 @@ const Systems    = require('./lib/systems');
 function Manic(parent, ratio) {
   var comps     = Components(),
       dom       = Dom(parent, ratio),
-      entities  = Entities(comps),
+      entities  = Entities(comps, dom),
       inputs    = Inputs(),
       loop      = Loop(),
       systems   = Systems(entities, comps);
@@ -17,12 +17,7 @@ function Manic(parent, ratio) {
   loop.on('update', update);
 
   var manic = {
-    components: comps.define,
-    entity:     entities.create,
-    start:      loop.start,
-    stop:       loop.stop,
-    system:     systems.define,
-    templates:  entities.define,
+    comps, dom, entities, inputs, loop, systems,
 
     scene(scene) {
       requestAnimationFrame(function() {
@@ -30,7 +25,6 @@ function Manic(parent, ratio) {
         comps.clear();
         entities.clear();
         scene.forEach(entities.create);
-        loop.tick(performance.now());
       });
     },
 
@@ -43,15 +37,12 @@ function Manic(parent, ratio) {
     }
   };
 
-  var renderCtx = { dom };
-  var updateCtx = { comps, entities, inputs, loop, manic };
-
   function render() {
-    systems.render(renderCtx);
+    systems.render(manic);
   }
 
   function update() {
-    systems.update(updateCtx);
+    systems.update(manic);
   }
 
   return manic;
