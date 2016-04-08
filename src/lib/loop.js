@@ -17,6 +17,8 @@ function Loop() {
       loop.emit('started', { time: last });
     },
 
+    step: config.step,
+
     stop() {
       running = false;
       cancelAnimationFrame(id);
