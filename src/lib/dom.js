@@ -14,28 +14,30 @@ function Dom(parent, ratio=1) {
   Object.assign(grid.style, { paddingTop: '100%' });
   root.appendChild(grid);
 
-  var dom = new Map;
-  var get = dom.get.bind(dom);
-  var clear = dom.clear.bind(dom);
-  var destroy = dom.delete.bind(dom);
+  var elems = {};
+  // var get = dom.get.bind(dom);
+  // var clear = dom.clear.bind(dom);
+  // var destroy = dom.delete.bind(dom);
 
-  Object.assign(dom, {
+  var dom = {
     clear() {
-      for (var [entity, el] of dom) el.remove();
-      clear();
+      for (var id in elems) elems[id].remove();
+      elems = {};
     },
 
     delete(entity) {
-      get(entity).remove();
-      destroy(entity);
+      var el = elems[entity];
+      if (!el) return;
+      el.remove();
+      delete elems[entity];
     },
 
     get(entity) {
-      if (dom.has(entity)) return get(entity);
+      if (elems[entity]) return elems[entity];
       var el = document.createElement('div');
       Object.assign(el.style, { position: 'absolute' });
       root.appendChild(el);
-      dom.set(entity, el);
+      elems[entity] = el;
       return el;
     },
 
@@ -45,7 +47,7 @@ function Dom(parent, ratio=1) {
       grid.remove();
       root.remove();
     }
-  });
+  };
 
   function resize() {
     parent.style.height = `${parent.clientWidth * ratio}px`;
