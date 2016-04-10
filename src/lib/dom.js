@@ -14,30 +14,27 @@ function Dom(parent, ratio=1) {
   Object.assign(grid.style, { paddingTop: '100%' });
   root.appendChild(grid);
 
-  var elems = {};
-  // var get = dom.get.bind(dom);
-  // var clear = dom.clear.bind(dom);
-  // var destroy = dom.delete.bind(dom);
+  var sprites = {};
 
   var dom = {
     clear() {
-      for (var id in elems) elems[id].remove();
-      elems = {};
+      for (var id in sprites) sprites[id].remove();
+      sprites = {};
     },
 
     delete(entity) {
-      var el = elems[entity];
+      var el = sprites[entity];
       if (!el) return;
       el.remove();
-      delete elems[entity];
+      delete sprites[entity];
     },
 
     get(entity) {
-      if (elems[entity]) return elems[entity];
+      if (sprites[entity]) return sprites[entity];
       var el = document.createElement('div');
       Object.assign(el.style, { position: 'absolute' });
       root.appendChild(el);
-      elems[entity] = el;
+      sprites[entity] = el;
       return el;
     },
 
