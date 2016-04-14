@@ -77,7 +77,11 @@ module.exports = {
     }
 
     function compose(e) {
-      return Object.assign({}, comps('Collision', e), comps('Position', e));
+      var coll = comps('Collision', e);
+      var mesh = Object.assign({}, comps('Position', e), comps('Size', e));
+      mesh.h += 2 * coll.ph;
+      mesh.w += 2 * coll.pw;
+      return mesh;
     }
   }
 };
