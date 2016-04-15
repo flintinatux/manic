@@ -11,7 +11,7 @@ function Manic(parent, ratio) {
       entities  = Entities(comps, dom),
       inputs    = Inputs(),
       loop      = Loop(),
-      systems   = Systems(entities, comps);
+      systems   = Systems(comps);
 
   loop.on('render', render);
   loop.on('update', update);

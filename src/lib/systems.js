@@ -1,14 +1,17 @@
 const builtIns  = require('../systems');
-const { every } = require('../util/list');
 const order     = require('../config').phases;
 
-function Systems(entities, comps) {
-  var phases = { render: [] };
+function Systems(comps) {
+  var list   = [],
+      phases = { render: [] };
+
   for (var phase of order) phases[phase] = [];
 
   var systems = {
     define(system) {
+      list.push(system);
       phases[system.phase].push(system);
+      system.entities = [];
     },
 
     render(ctx) {
@@ -21,15 +24,29 @@ function Systems(entities, comps) {
   };
 
   builtIns.forEach(systems.define);
+  comps.on('changed', index);
 
-  function run({ deps, update, updateAll }, ctx) {
+  function index(id) {
+    for (var i = list.length - 1; i; i--) {
+      var { deps, entities } = list[i];
+      if (!deps) continue;
+      if (deps.every(comps.forEntity(id))) {
+        if (entities.indexOf(id) === -1) entities.push(id);
+      } else {
+        var j = entities.indexOf(id);
+        if (j > -1) entities.splice(j, 1);
+      }
+    }
+  }
+
+  function run({ deps, entities, update, updateAll }, ctx) {
     if (typeof updateAll === 'function') return updateAll(ctx);
     var id, i = entities.length;
     function getState(dep) { return comps(dep, id) }
     while (i--) {
       id = entities[i];
       state = deps.map(getState);
-      every(state) && update(id, state, ctx);
+      update(id, state, ctx);
     }
   }
 
