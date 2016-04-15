@@ -43,7 +43,8 @@ function Components() {
     },
 
     removeAll(id) {
-      for (var name in store) comps.remove(name, id);
+      for (var name in store) delete comps(name)[id];
+      comps.emit('changed', id);
     }
   });
 
