@@ -8,28 +8,27 @@
     "type": "git",
     "url": "git+ssh://git@github.com/flintinatux/manic.git"
   },
-  "main": "src/manic.js",
+  "main": "src/index.js",
   "scripts": {
-    "build": "browserify src/manic.js --standalone Manic > dist/manic.js",
-    "clean": "rm -rf dist",
-    "demo": "browser-sync start --files 'dist/, demo.html' --no-notify --no-open --port 3600 --server",
-    "postbuild": "ccjs dist/manic.js --warning_level=QUIET > dist/manic-min.js",
-    "prebuild": "npm run clean && mkdir -p dist",
-    "prewatch": "npm run clean && mkdir -p dist",
-    "test": "echo \"No tests yet\" && exit 0",
-    "watch": "watchify src/manic.js -d -v --standalone Manic -o dist/manic.js"
+    "build": "browserify -s m src/index.js | buble > dist/manic.js",
+    "clean": "rm -rf dist && mkdir -p dist",
+    "hint": "jshint --reporter=node_modules/jshint-stylish .",
+    "postbuild": "uglifyjs dist/manic.js -c -m > dist/manic.min.js",
+    "postversion": "git push --tags origin master",
+    "prebuild": "yarn run clean && mkdir -p dist",
+    "preversion": "git checkout master && yarn run build",
+    "test": "echo \"No tests yet\" && exit 0"
   },
   "dependencies": {
-    "classnames": "^2.2.3",
-    "eventemitter3": "^1.2.0",
-    "idgen": "^2.0.2",
-    "keycode": "^2.1.1",
-    "lodash": "^4.6.1"
+    "crocks": "^0.1.0",
+    "eventemitter3": "^2.0.2",
+    "keycode": "^2.1.8"
   },
   "devDependencies": {
-    "browser-sync": "^2.11.2",
-    "browserify": "^13.0.0",
-    "closurecompiler": "^1.5.2",
-    "watchify": "^3.7.0"
+    "browserify": "^13.1.1",
+    "buble": "^0.15.1",
+    "jshint": "^2.9.4",
+    "jshint-stylish": "^2.2.1",
+    "uglify-js": "^2.7.5"
   }
 }
